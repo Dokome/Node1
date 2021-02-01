@@ -1,10 +1,32 @@
-const http = require('http');
+const handleBlogRouter = require("./src/router/blog");
+const handleUserRouter = require('./src/router/user')
+const serverHandle = (req, res) => {
+    //设置返回格式JSON
+    res.setHeader('Content-type','application/json');
+    const url = req.url;
+    req.path = url.split('?')[0];
 
+    //处理Blog路由
+    const blogData = handleBlogRouter(req, res);
+    if(blogData) {
+        res.end(
+            JSON.stringify(blogData)
+        )
+        return 
+    }
 
-const app = http.createServer((req, res) => {
-    res.end('hello world');
-});
+    //处理User路由
+    const userData = handleUserRouter(req, res);
+    if(userData) {
+        res.end(
+            JSON.stringify(userData)
+        )
+        return 
+    }
 
+    res.writeHead(404,{'Content-type':'text/plain'})
+    res.write('404 Not Found\n');
+    res.end();
+}
 
-app.listen('8000');
-console.log('server is running');
+module.exports = serverHandle;
