@@ -1,3 +1,4 @@
 node_modules
 test.js
-blog1/node_modules
+blog1/node_modules 
+blog1/package-lock.json
